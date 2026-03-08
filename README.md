@@ -1,4 +1,4 @@
-# 🚌 TransJogja Navigator
+# TransJogja Navigator
 
 <div align="center">
   <img src="https://img.shields.io/badge/Python-3.9+-blue.svg" alt="Python">
@@ -12,22 +12,22 @@
 
 ---
 
-## ✨ Fitur Utama
+## Fitur Utama
 
-### 👤 Akses Pengguna (Publik)
+### Akses Pengguna (Publik)
 Fokus pada navigasi, pencarian arah, dan panduan perjalanan.
-- **🗺️ Cari Rute Terpendek**: Menemukan jalur bus paling efisien dari titik awal ke tujuan menggunakan teori graf terbobot (Dijkstra) dan formula jarak *Haversine*.
-- **📍 Peta Fasilitas Halte**: Eksplorasi interaktif seluruh titik tunggu TransJogja (dilengkapi integrasi GPS untuk melacak lokasi pengguna dengan `streamlit-geolocation`).
-- **🚌 Informasi Bus & Koridor**: Katalog visual operasional koridor, jam kerja, dan rentang interval kedatangan bus di Yogyakarta.
+- **Cari Rute Terpendek**: Menemukan jalur bus paling efisien dari titik awal ke tujuan menggunakan teori graf terbobot (Dijkstra) dan formula jarak *Haversine*.
+- **Peta Fasilitas Halte**: Eksplorasi interaktif seluruh titik tunggu TransJogja (dilengkapi integrasi GPS untuk melacak lokasi pengguna dengan `streamlit-geolocation`).
+- **Informasi Bus & Koridor**: Katalog visual operasional koridor, jam kerja, dan rentang interval kedatangan bus di Yogyakarta.
 
-### 🛡️ Akses Administrator (Control Panel)
+### Akses Administrator (Control Panel)
 Fokus pada pengelolaan dan pemantauan sistem manajemen data bus.
 - **Dashboard Statistik**: Memperlihatkan secara *real-time* jumlah halte aktif, koridor beroperasi, serta struktur node KML (titik lintang & bujur).
 - **CRUD (Create, Read, Update, Delete)**: Modul untuk menambah, mengubah, menonaktifkan, atau menghapus data rute bus dan halte melalui panel kontrol khusus.
 
 ---
 
-## 🛠️ Teknologi & *Library* yang Digunakan
+## Teknologi & *Library* yang Digunakan
 
 | Komponen | Teknologi Utama |
 | --- | --- |
@@ -40,7 +40,7 @@ Fokus pada pengelolaan dan pemantauan sistem manajemen data bus.
 
 ---
 
-## 🚀 Panduan Instalasi (Untuk Development Lokal)
+## Panduan Instalasi (Untuk Development Lokal)
 
 Ikuti langkah-langkah di bawah ini untuk menjalankan aplikasi di mesin lokal Anda:
 
@@ -72,7 +72,7 @@ Ikuti langkah-langkah di bawah ini untuk menjalankan aplikasi di mesin lokal And
 
 ---
 
-## 🔐 Kredensial Login
+## Kredensial Login
 
 Saat Anda pertama kali masuk, Anda akan diminta melewati gerbang autentikasi web:
 
@@ -86,7 +86,7 @@ Saat Anda pertama kali masuk, Anda akan diminta melewati gerbang autentikasi web
 
 ---
 
-## 📂 Struktur Direktori
+## Struktur Direktori
 
 ```text
 transroute/
