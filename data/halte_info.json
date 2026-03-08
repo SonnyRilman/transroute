@@ -1,0 +1,44 @@
+{
+  "Halte Tugu Jogja": {
+    "alamat": "Jl. Pangeran Mangkubumi, Gowongan, Kec. Jetis",
+    "fasilitas": ["Shelter Ber-AC", "CCTV", "Rambu Informasi", "Kursi Tunggu"],
+    "koridor": ["2A", "3B"],
+    "jam_operasi": "05:00 - 22:00",
+    "status": "Aktif"
+  },
+  "Halte RS Bethesda": {
+    "alamat": "Jl. Jenderal Sudirman No.70, Kotabaru",
+    "fasilitas": ["Shelter", "Rambu Informasi", "Kursi Tunggu"],
+    "koridor": ["1A", "2A"],
+    "jam_operasi": "05:00 - 22:00",
+    "status": "Aktif"
+  },
+  "Halte Kotabaru": {
+    "alamat": "Jl. Suroto, Kotabaru, Kec. Gondokusuman",
+    "fasilitas": ["Shelter", "CCTV", "Kursi Tunggu"],
+    "koridor": ["1A"],
+    "jam_operasi": "05:00 - 21:30",
+    "status": "Aktif"
+  },
+  "Halte Kleringan": {
+    "alamat": "Jl. AM Sangaji, Cokrodiningratan, Kec. Jetis",
+    "fasilitas": ["Shelter", "Rambu Informasi"],
+    "koridor": ["1A", "3B"],
+    "jam_operasi": "05:30 - 21:00",
+    "status": "Aktif"
+  },
+  "Halte Malioboro 1": {
+    "alamat": "Jl. Malioboro, Suryatmajan, Kec. Danurejan",
+    "fasilitas": ["Shelter Ber-AC", "CCTV", "Toilet", "Minimarket", "Kursi Tunggu", "Informasi Digital"],
+    "koridor": ["1A", "2A", "3B", "4C"],
+    "jam_operasi": "05:00 - 23:00",
+    "status": "Aktif"
+  },
+  "Halte Malioboro 2": {
+    "alamat": "Jl. Malioboro (Selatan), Ngupasan, Kec. Gondomanan",
+    "fasilitas": ["Shelter Ber-AC", "CCTV", "Kursi Tunggu", "Informasi Digital"],
+    "koridor": ["1A", "2A", "4C"],
+    "jam_operasi": "05:00 - 23:00",
+    "status": "Aktif"
+  }
+}

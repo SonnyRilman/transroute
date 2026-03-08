@@ -1,0 +1,42 @@
+[
+  {
+    "kode": "1A",
+    "nama": "Koridor 1A — Malioboro – Kleringan – Kotabaru",
+    "rute": "Terminal Condong Catur → Malioboro → Terminal Giwangan",
+    "halte": ["Halte Kleringan", "Halte Kotabaru", "Halte RS Bethesda", "Halte Malioboro 1", "Halte Malioboro 2"],
+    "jam_operasi": "05:00 – 22:00",
+    "tarif": "Rp 3.500",
+    "interval": "15–20 menit",
+    "warna": "#3b82f6"
+  },
+  {
+    "kode": "2A",
+    "nama": "Koridor 2A — Tugu – Malioboro – Prambanan",
+    "rute": "Terminal Jombor → Tugu → Malioboro → Prambanan",
+    "halte": ["Halte Tugu Jogja", "Halte RS Bethesda", "Halte Malioboro 1", "Halte Malioboro 2"],
+    "jam_operasi": "05:30 – 21:30",
+    "tarif": "Rp 3.500",
+    "interval": "20–25 menit",
+    "warna": "#10b981"
+  },
+  {
+    "kode": "3B",
+    "nama": "Koridor 3B — Tugu – Kleringan – Senopati",
+    "rute": "Terminal Jombor → Tugu → Kleringan → Senopati",
+    "halte": ["Halte Tugu Jogja", "Halte Kleringan", "Halte Malioboro 1"],
+    "jam_operasi": "05:30 – 21:00",
+    "tarif": "Rp 3.500",
+    "interval": "20–30 menit",
+    "warna": "#a78bfa"
+  },
+  {
+    "kode": "4C",
+    "nama": "Koridor 4C — Malioboro – UGM",
+    "rute": "Terminal Giwangan → Malioboro → UGM → Godean",
+    "halte": ["Halte Malioboro 1", "Halte Malioboro 2"],
+    "jam_operasi": "06:00 – 20:00",
+    "tarif": "Rp 3.500",
+    "interval": "25–35 menit",
+    "warna": "#f59e0b"
+  }
+]
