@@ -43,25 +43,25 @@ if not st.session_state.logged_in:
         background: linear-gradient(145deg, #1e293b, #0f172a);
         border: 1px solid rgba(148,163,184, 0.12);
         border-radius: 24px;
-        padding: 40px 36px;
-        box-shadow: 0 24px 64px rgba(0,0,0, 0.5), 0 0 0 1px rgba(255,255,255, 0.04);
+        padding: 45px 32px;
+        box-shadow: 0 30px 70px rgba(0,0,0, 0.5);
         width: 100%;
-        max-width: 440px;
+        max-width: 480px;
         margin: 0 auto;
     }
     .stTabs [data-baseweb="tab-list"] {
-        background-color: rgba(0, 0, 0, 0.2);
-        border-radius: 14px;
-        padding: 6px;
-        gap: 8px;
-        margin-bottom: 24px;
+        background-color: rgba(0, 0, 0, 0.3);
+        border-radius: 16px;
+        padding: 5px;
+        margin-bottom: 30px;
         border: 1px solid rgba(255,255,255, 0.05);
         display: flex;
-        justify-content: space-between;
+        width: 100%;
     }
     .stTabs [data-baseweb="tab"] {
-        border-radius: 10px !important;
-        padding: 10px 16px !important;
+        border-radius: 12px !important;
+        padding: 10px 4px !important;
+        height: 44px !important;
         border: none !important;
         background: transparent !important;
         color: #94a3b8 !important;
@@ -69,12 +69,16 @@ if not st.session_state.logged_in:
         flex: 1 !important;
         display: flex !important;
         justify-content: center !important;
+        align-items: center !important;
+        font-size: 0.88rem !important;
+        transition: all 0.3s ease !important;
     }
     .stTabs [aria-selected="true"] {
-        background: rgba(255,255,255, 0.1) !important;
-        color: #f8fafc !important;
-        box-shadow: 0 4px 12px rgba(0,0,0, 0.2) !important;
+        background: rgba(59, 130, 246, 0.15) !important;
+        color: #60a5fa !important;
+        border: 1px solid rgba(59, 130, 246, 0.3) !important;
     }
+    /* Hide default highlight bar */
     .stTabs [data-baseweb="tab-highlight"] { display: none !important; }
     </style>""", unsafe_allow_html=True)
 
@@ -100,7 +104,7 @@ if not st.session_state.logged_in:
             </div>
         </div>""", unsafe_allow_html=True)
 
-        tab_user, tab_admin = st.tabs(["Login Pengguna", "Login Administrator"])
+        tab_user, tab_admin = st.tabs(["👤 Pengguna", "🔒 Administrator"])
 
         with tab_user:
             st.markdown("""
@@ -110,23 +114,18 @@ if not st.session_state.logged_in:
             </div>""", unsafe_allow_html=True)
 
             with st.form("user_login"):
-                st.markdown('<div style="font-size:.7rem;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;"><i class="fa-solid fa-id-badge" style="margin-right:6px;color:#60a5fa;"></i>Nama Pengguna</div>', unsafe_allow_html=True)
-                uname  = st.text_input("nama", placeholder="Masukkan nama Anda", label_visibility="collapsed")
-                st.markdown('<div style="font-size:.7rem;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;margin-top:16px;"><i class="fa-solid fa-key" style="margin-right:6px;color:#60a5fa;"></i>Kata Sandi</div>', unsafe_allow_html=True)
-                passwd = st.text_input("user_pass", type="password", placeholder="Ketik: user123", label_visibility="collapsed")
+                st.markdown('<div style="font-size:.7rem;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;"><i class="fa-solid fa-id-badge" style="margin-right:6px;color:#60a5fa;"></i>Nama Anda (Opsional)</div>', unsafe_allow_html=True)
+                uname = st.text_input("nama", placeholder="Guest", label_visibility="collapsed")
+                
                 st.markdown('<div style="margin-top:24px;">', unsafe_allow_html=True)
-                submitted = st.form_submit_button("Masuk", use_container_width=True)
+                submitted = st.form_submit_button("🚀 Mulai Penelusuran", use_container_width=True)
                 st.markdown('</div>', unsafe_allow_html=True)
+                
                 if submitted:
-                    if not uname.strip():
-                        st.error("Nama tidak boleh kosong.", icon="⚠️")
-                    elif passwd != USER_PASS:
-                        st.error("Sandi salah. (Gunakan: user123)", icon="🚫")
-                    else:
-                        st.session_state.logged_in = True
-                        st.session_state.role      = "user"
-                        st.session_state.username  = uname.strip()
-                        st.rerun()
+                    st.session_state.logged_in = True
+                    st.session_state.role      = "user"
+                    st.session_state.username  = uname.strip() if uname.strip() else "Pengguna"
+                    st.rerun()
 
         with tab_admin:
             st.markdown("""

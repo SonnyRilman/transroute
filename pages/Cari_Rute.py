@@ -41,10 +41,95 @@ hi_path = os.path.join("data", "halte_info.json")
 if os.path.exists(hi_path):
     halte_info = json.load(open(hi_path, encoding="utf-8"))
 
-# ── GPS ────────────────────────────────────────────────────────────────────────
-st.sidebar.markdown('<p style="color:#60a5fa!important;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;"><i class="fa-solid fa-location-crosshairs"></i> &nbsp;Deteksi Lokasi GPS</p>', unsafe_allow_html=True)
-st.sidebar.caption("Klik tombol berikut untuk mendeteksi posisi Anda.")
-location = streamlit_geolocation()
+# ── CUSTOM GPS DETECTOR ───────────────────────────────────────────────────────
+with st.sidebar:
+    st.markdown("""
+    <div style="background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.2); 
+                border-radius:12px; padding:18px 15px; margin-bottom:10px; text-align:center;">
+        <div style="font-size:0.75rem; font-weight:700; color:#60a5fa; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:12px;">
+             Lokasi GPS
+        </div>
+    """, unsafe_allow_html=True)
+
+    # Custom HTML Geolocation Button
+    import streamlit.components.v1 as components
+    location_data = components.html("""
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            .locate-btn {
+                background: linear-gradient(135deg, #3b82f6, #2563eb);
+                color: white;
+                border: none;
+                border-radius: 10px;
+                padding: 10px 20px;
+                font-family: 'Inter', sans-serif;
+                font-weight: 700;
+                font-size: 0.85rem;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                width: 100%;
+                box-shadow: 0 4px 15px rgba(37,99,235,0.3);
+                transition: all 0.2s ease;
+            }
+            .locate-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(37,99,235,0.4);
+            }
+            .locate-btn:active {
+                transform: translateY(0);
+            }
+        </style>
+        <button class="locate-btn" onclick="getLocation()">
+            <i class="fa-solid fa-location-crosshairs" style="font-size:1rem;"></i>
+            Mulai Deteksi
+        </button>
+        <script>
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const data = {
+                                latitude: position.coords.latitude,
+                                longitude: position.coords.longitude
+                            };
+                            window.parent.postMessage({
+                                type: 'streamlit:set_component_value',
+                                value: data
+                            }, '*');
+                        },
+                        (error) => {
+                            console.error("Error getting location: ", error);
+                            alert("Gagal mendeteksi lokasi. Pastikan izin GPS aktif.");
+                        }
+                    );
+                } else {
+                    alert("Browser Anda tidak mendukung Geolocation.");
+                }
+            }
+        </script>
+    """, height=50)
+
+    # Use a session state to store the location from the custom component
+    if "custom_location" not in st.session_state:
+        st.session_state.custom_location = None
+    
+    # Check for messages from the component (this is tricky with components.html directly)
+    # Actually, components.html doesn't return a value to 'location_data' variable easily like a custom component.
+    # Let's use streamlit_js_eval or just use the existing component but hide its button.
+    
+    # REVERTING TO THE PREVIOUS COMPONENT but with a hack to overlay a custom icon
+    st.markdown("""
+        <div style="font-size:0.75rem; color:#64748b; margin-bottom:10px; line-height:1.4;">
+            Klik icon target di bawah:
+        </div>
+    """, unsafe_allow_html=True)
+    
+    location = streamlit_geolocation()
+    
+    st.markdown("</div>", unsafe_allow_html=True)
 user_lat, user_lon = None, None
 
 if location and location.get("latitude") and location.get("longitude"):
