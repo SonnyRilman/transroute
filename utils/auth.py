@@ -1,52 +1,53 @@
 import streamlit as st
 
 def check_login():
-    """Verify user is logged in, else stop execution."""
+    """Safety check, but now users enter directly by default."""
     if not st.session_state.get("logged_in"):
+        st.session_state.logged_in = True
+        st.session_state.role = "user"
+        st.session_state.username = "Guest"
+    return True
+
+def check_admin():
+    """Verify user is an admin. If not, show a dedicated admin login form."""
+    if st.session_state.get("role") != "admin":
         st.markdown("""
-        <div style="text-align:center;margin-top:80px;">
-            <div style="width:70px;height:70px;background:rgba(244,63,94,.1);border-radius:50%;
+        <div style="text-align:center;margin-top:50px;margin-bottom:30px;">
+            <div style="width:70px;height:70px;background:rgba(245,158,11,.1);border-radius:50%;
                         display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
-                <i class="fa-solid fa-lock" style="font-size:2rem;color:#f43f5e;"></i>
+                <i class="fa-solid fa-shield-halved" style="font-size:2rem;color:#f59e0b;"></i>
             </div>
-            <h3 style="color:#e2e8f0;margin-bottom:8px;">Akses Ditolak</h3>
-            <p style="color:#94a3b8;font-size:.9rem;">Sistem memerlukan autentikasi terlebih dahulu.</p>
-            <p style="font-size:.8rem;color:#64748b;">Silakan kembali ke halaman Beranda untuk login.</p>
+            <h3 style="color:#e2e8f0;margin-bottom:8px;">Akses Administrator</h3>
+            <p style="color:#94a3b8;font-size:.9rem;">Silakan login untuk mengelola database sistem.</p>
         </div>
         """, unsafe_allow_html=True)
         
-        col1, col2, col3 = st.columns([1, 1, 1])
-        with col2:
-            if st.button("Kembali ke Beranda (Login)", use_container_width=True):
-                st.switch_page("app.py")
-        st.stop()
-
-def check_admin():
-    """Verify user is an admin, else stop execution."""
-    check_login()
-    if st.session_state.get("role") != "admin":
-        st.markdown("""
-        <div style="text-align:center;margin-top:80px;">
-            <div style="width:70px;height:70px;background:rgba(244,63,94,.1);border-radius:50%;
-                        display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
-                <i class="fa-solid fa-shield-halved" style="font-size:2rem;color:#f43f5e;"></i>
-            </div>
-            <h3 style="color:#e2e8f0;margin-bottom:8px;">Akses Administrator Diperlukan</h3>
-            <p style="color:#94a3b8;font-size:.9rem;">Halaman ini dibatasi khusus untuk Administrator.</p>
-        </div>
-        """, unsafe_allow_html=True)
+        _, center, _ = st.columns([1, 1.2, 1])
+        with center:
+            with st.form("admin_login_inline"):
+                u = st.text_input("Admin ID", placeholder="admin")
+                p = st.text_input("Password", type="password", placeholder="••••••••")
+                if st.form_submit_button("Masuk sebagai Admin", use_container_width=True):
+                    if u == "admin" and p == "admin123":
+                        st.session_state.logged_in = True
+                        st.session_state.role = "admin"
+                        st.session_state.username = "Administrator"
+                        st.success("Login Berhasil!")
+                        st.rerun()
+                    else:
+                        st.error("Kredensial salah.")
         st.stop()
 
 def render_sidebar():
     """Render custom sidebar navigation based on role."""
+    check_login()
     role = st.session_state.get("role")
     uname = st.session_state.get("username")
-    if not role: return
 
     # User Profile Header
     role_color = "#f59e0b" if role == "admin" else "#60a5fa"
     role_icon  = "fa-shield-halved" if role == "admin" else "fa-user"
-    role_label = "Administrator" if role == "admin" else "Pengguna"
+    role_label = "Administrator" if role == "admin" else "Tamu / Pengguna"
 
     st.sidebar.markdown(f"""
     <div style="text-align:center;padding:12px 0 8px;">
@@ -74,33 +75,50 @@ def render_sidebar():
     </div>
     """, unsafe_allow_html=True)
 
-    # Inject CSS to make page_link styling consistent with dark theme
+    # Inject CSS for custom sidebar styling
     st.sidebar.markdown("""
     <style>
-    [data-testid="stSidebarNav"] {display: none !important;}
+    /* Style the custom links to look more premium */
     .stPageLink { margin-bottom: 4px; }
-    .stPageLink a { padding: 0.6rem 0.8rem; border-radius: 8px; transition: all 0.2s ease; }
-    .stPageLink a:hover { background-color: rgba(96,165,250,0.1) !important; text-decoration: none !important;}
+    .stPageLink a { 
+        padding: 0.6rem 0.8rem !important; 
+        border-radius: 8px !important; 
+        transition: all 0.2s ease !important;
+        background-color: rgba(255,255,255,0.03) !important;
+        border: 1px solid rgba(255,255,255,0.05) !important;
+        color: #e2e8f0 !important;
+    }
+    .stPageLink a:hover { 
+        background-color: rgba(59,130,246,0.1) !important; 
+        border-color: rgba(59,130,246,0.3) !important;
+        text-decoration: none !important;
+        color: #60a5fa !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
     # Custom Navigation Links
-    st.sidebar.page_link("app.py", label="Dashboard Beranda")
+    st.sidebar.page_link("app.py", label="Beranda")
     
-    if role == "user":
-        st.sidebar.markdown('<p style="color:#64748b;font-size:0.65rem;font-weight:800;letter-spacing:1.2px;margin:24px 0 8px 6px;">FITUR PENGGUNA</p>', unsafe_allow_html=True)
-        st.sidebar.page_link("pages/Cari_Rute.py", label="Cari Rute Terpendek")
-        st.sidebar.page_link("pages/Peta_Halte.py", label="Peta Fasilitas Halte")
-        st.sidebar.page_link("pages/Bus_Koridor.py", label="Info Bus & Koridor")
+    st.sidebar.markdown('<p style="color:#64748b;font-size:0.65rem;font-weight:800;letter-spacing:1.2px;margin:24px 0 8px 6px;">FITUR NAVIGASI</p>', unsafe_allow_html=True)
+    st.sidebar.page_link("pages/Cari_Rute.py", label="Cari Rute Terpendek")
+    st.sidebar.page_link("pages/Peta_Halte.py", label="Peta Fasilitas Halte")
+    st.sidebar.page_link("pages/Bus_Koridor.py", label="Info Bus & Koridor")
 
+    # Admin Panel only visible if already admin
     if role == "admin":
-        st.sidebar.markdown('<p style="color:#f59e0b;font-size:0.65rem;font-weight:800;letter-spacing:1.2px;margin:24px 0 8px 6px;">PENGELOLAAN DATA</p>', unsafe_allow_html=True)
-        st.sidebar.page_link("pages/Admin.py", label="Panel Administrator")
+        st.sidebar.markdown('<p style="color:#f59e0b;font-size:0.65rem;font-weight:800;letter-spacing:1.2px;margin:24px 0 8px 6px;">ADMINISTRATOR</p>', unsafe_allow_html=True)
+        st.sidebar.page_link("pages/Admin.py", label="Admin Panel")
 
-    # Logout Button
+    # Footer Actions
     st.sidebar.markdown('<hr style="border-color:rgba(148,163,184,.1);margin:24px 0 16px;">', unsafe_allow_html=True)
-    if st.sidebar.button("Keluar (Logout)", use_container_width=True):
-        for key in st.session_state.keys():
-            del st.session_state[key]
-        st.switch_page("app.py")
+    if role == "admin":
+        if st.sidebar.button("Keluar Admin (ke Tamu)", use_container_width=True):
+            st.session_state.role = "user"
+            st.session_state.username = "Guest"
+            st.rerun()
+    else:
+        # Check if the user is asking for admin mode via query params (optional secret)
+        # Or just leave it hidden for manual URL entry.
+        st.sidebar.markdown('<div style="font-size:0.6rem;color:#334155;text-align:center;">TransJogja Navigator v3.1</div>', unsafe_allow_html=True)
 

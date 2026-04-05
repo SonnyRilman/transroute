@@ -14,150 +14,17 @@ inject_styles()
 # ══════════════════════════════════════════════════════════════════════════════
 # SESSION STATE INIT
 # ══════════════════════════════════════════════════════════════════════════════
-if "logged_in"  not in st.session_state: st.session_state.logged_in  = False
-if "role"       not in st.session_state: st.session_state.role       = None
-if "username"   not in st.session_state: st.session_state.username   = None
+if "logged_in"  not in st.session_state: st.session_state.logged_in  = True
+if "role"       not in st.session_state: st.session_state.role       = "user"
+if "username"   not in st.session_state: st.session_state.username   = "Guest"
 
 ADMIN_USER = "admin"
 ADMIN_PASS = "admin123"
-USER_PASS  = "user123"
 
 # ══════════════════════════════════════════════════════════════════════════════
 # LOGIN SCREEN — shown when not yet logged in
 # ══════════════════════════════════════════════════════════════════════════════
-if not st.session_state.logged_in:
-    # Inject extra login-page CSS to remove default Form borders and style Tabs
-    st.markdown("""
-    <style>
-    section[data-testid="stSidebar"] { display: none !important; }
-    .block-container { 
-        display:flex; align-items:center; justify-content:center;
-        min-height:96vh !important; padding-top:0 !important; 
-    }
-    /* Hide Streamlit form border to integrate seamlessly */
-    [data-testid="stForm"] { 
-        border: none !important; padding: 0 !important; 
-    }
-    /* Style Tabs to act as a sleek toggle */
-    [data-testid="stTabs"] {
-        background: linear-gradient(145deg, #1e293b, #0f172a);
-        border: 1px solid rgba(148,163,184, 0.12);
-        border-radius: 24px;
-        padding: 45px 32px;
-        box-shadow: 0 30px 70px rgba(0,0,0, 0.5);
-        width: 100%;
-        max-width: 480px;
-        margin: 0 auto;
-    }
-    .stTabs [data-baseweb="tab-list"] {
-        background-color: rgba(0, 0, 0, 0.3);
-        border-radius: 16px;
-        padding: 5px;
-        margin-bottom: 30px;
-        border: 1px solid rgba(255,255,255, 0.05);
-        display: flex;
-        width: 100%;
-    }
-    .stTabs [data-baseweb="tab"] {
-        border-radius: 12px !important;
-        padding: 10px 4px !important;
-        height: 44px !important;
-        border: none !important;
-        background: transparent !important;
-        color: #94a3b8 !important;
-        font-weight: 700 !important;
-        flex: 1 !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        font-size: 0.88rem !important;
-        transition: all 0.3s ease !important;
-    }
-    .stTabs [aria-selected="true"] {
-        background: rgba(59, 130, 246, 0.15) !important;
-        color: #60a5fa !important;
-        border: 1px solid rgba(59, 130, 246, 0.3) !important;
-    }
-    /* Hide default highlight bar */
-    .stTabs [data-baseweb="tab-highlight"] { display: none !important; }
-    </style>""", unsafe_allow_html=True)
-
-    _, center, _ = st.columns([1, 1.4, 1])
-    with center:
-        # Logo / title
-        st.markdown("""
-        <div style="text-align:center;margin-bottom:28px;">
-            <div style="width:72px;height:72px;
-                        background:linear-gradient(135deg,#3b82f6,#8b5cf6);
-                        border-radius:20px;display:flex;align-items:center;
-                        justify-content:center;margin:0 auto 16px;
-                        box-shadow:0 12px 36px rgba(59,130,246,.3);">
-                <i class="fa-solid fa-map-location-dot" style="font-size:2.2rem;color:white;"></i>
-            </div>
-            <div style="font-size:2.2rem;font-weight:800;
-                        background:linear-gradient(135deg,#93c5fd,#ffffff,#c4b5fd);
-                        -webkit-background-clip:text;-webkit-text-fill-color:transparent;">
-                TransJogja Navigator
-            </div>
-            <div style="font-size:.9rem;color:#64748b;margin-top:6px;letter-spacing:0.5px;">
-                Sistem Penentuan Rute Terpendek Cerdas
-            </div>
-        </div>""", unsafe_allow_html=True)
-
-        tab_user, tab_admin = st.tabs(["👤 Pengguna", "🔒 Administrator"])
-
-        with tab_user:
-            st.markdown("""
-            <div style="text-align:center;margin-bottom:20px;">
-                <div style="font-size:1.1rem;font-weight:700;color:#e2e8f0;margin-bottom:4px;">Akses Publik</div>
-                <div style="font-size:.8rem;color:#64748b;">Gunakan nama Anda untuk mengakses pencarian rute</div>
-            </div>""", unsafe_allow_html=True)
-
-            with st.form("user_login"):
-                st.markdown('<div style="font-size:.7rem;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;"><i class="fa-solid fa-id-badge" style="margin-right:6px;color:#60a5fa;"></i>Nama Anda (Opsional)</div>', unsafe_allow_html=True)
-                uname = st.text_input("nama", placeholder="Guest", label_visibility="collapsed")
-                
-                st.markdown('<div style="margin-top:24px;">', unsafe_allow_html=True)
-                submitted = st.form_submit_button("🚀 Mulai Penelusuran", use_container_width=True)
-                st.markdown('</div>', unsafe_allow_html=True)
-                
-                if submitted:
-                    st.session_state.logged_in = True
-                    st.session_state.role      = "user"
-                    st.session_state.username  = uname.strip() if uname.strip() else "Pengguna"
-                    st.rerun()
-
-        with tab_admin:
-            st.markdown("""
-            <div style="text-align:center;margin-bottom:20px;">
-                <div style="font-size:1.1rem;font-weight:700;color:#fcd34d;margin-bottom:4px;">Control Panel</div>
-                <div style="font-size:.8rem;color:#64748b;">Autentikasi khusus pengatur lalu lintas & data</div>
-            </div>""", unsafe_allow_html=True)
-
-            with st.form("admin_login"):
-                st.markdown('<div style="font-size:.7rem;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;"><i class="fa-solid fa-user-shield" style="margin-right:6px;color:#f59e0b;"></i>Admin ID</div>', unsafe_allow_html=True)
-                uname  = st.text_input("username", placeholder="admin", label_visibility="collapsed")
-                st.markdown('<div style="font-size:.7rem;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;margin-top:16px;"><i class="fa-solid fa-lock" style="margin-right:6px;color:#f59e0b;"></i>Admin PIN / Kata Sandi</div>', unsafe_allow_html=True)
-                passwd = st.text_input("password", type="password", placeholder="admin123", label_visibility="collapsed")
-                st.markdown('<div style="margin-top:24px;">', unsafe_allow_html=True)
-                submitted = st.form_submit_button("Masuk Sistem", use_container_width=True)
-                st.markdown('</div>', unsafe_allow_html=True)
-                if submitted:
-                    if uname == ADMIN_USER and passwd == ADMIN_PASS:
-                        st.session_state.logged_in = True
-                        st.session_state.role      = "admin"
-                        st.session_state.username  = "Administrator"
-                        st.rerun()
-                    else:
-                        st.error("Kredensial Admin tidak valid.", icon="🚫")
-
-        # Footer
-        st.markdown("""
-        <div style="text-align:center;margin-top:24px;font-size:.7rem;color:#334155;letter-spacing:0.5px;font-weight:600;">
-            <i class="fa-solid fa-code" style="margin-right:4px;"></i> Dijkstra · Haversine 
-        </div>""", unsafe_allow_html=True)
-
-    st.stop()  # Don't render anything below if not logged in
+# Access is now direct. Admin login moved to Admin page / Sidebar trigger.
 
 # ══════════════════════════════════════════════════════════════════════════════
 # MAIN APP — shown after login

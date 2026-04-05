@@ -18,8 +18,8 @@ def inject_styles():
   var s = document.createElement('style');
   s.id = 'tj-styles';
   s.textContent = `
-    html,body,[class*="css"]{font-family:'Outfit',sans-serif!important}
-    #MainMenu,footer,header{visibility:hidden!important}
+    html,body{font-family:'Outfit',sans-serif!important}
+    #MainMenu,footer{visibility:hidden!important}
     .stDeployButton{display:none!important}
     .block-container{padding-top:.8rem!important;padding-bottom:1rem!important;max-width:100%!important}
     .stApp{background:#0d1117!important}
